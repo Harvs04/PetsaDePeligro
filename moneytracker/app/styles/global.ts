@@ -8,6 +8,7 @@ export const colors = {
   text: '#ffffff',
   textSecondary: '#a0a0b0',
   alert: '#ff5252',
+  pressableIcon: '#fff',
 };
 
 export const globalStyles = StyleSheet.create({
@@ -26,8 +27,6 @@ export const globalStyles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '600',
     color: colors.textSecondary,
-    marginTop: 30,
-    marginBottom: 16,
   },
   header: {
     flexDirection: 'row',
@@ -39,6 +38,10 @@ export const globalStyles = StyleSheet.create({
     color: colors.textSecondary,
     marginTop: 4,
     marginBottom: 30,
+  },
+  label: {
+    fontSize: 14,
+    color: '#a0a0b0',
   },
   empty: {
     color: colors.textSecondary,

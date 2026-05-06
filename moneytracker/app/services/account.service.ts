@@ -10,7 +10,7 @@ import api from '../lib/api';
 //   return res.data;
 // };
 
-export default async function getTransactions() {
-  const res = await api.get('/transactions/');
+export default async function getAccounts() {
+  const res = await api.get('/accounts/');
   return res.data;
 };
