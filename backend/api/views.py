@@ -1,8 +1,8 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-from .models import User, Transaction
-from .serializer import UserSerializer, TransactionSerializer
+from .models import User, Account
+from .serializer import UserSerializer, AccountSerializer
 
 @api_view(['GET'])
 def get_users(request):
@@ -42,37 +42,37 @@ def user_detail(request, pk):
   
   
 @api_view(['GET'])
-def get_transactions(request):
-  transactions = Transaction.objects.all()
-  serializer = TransactionSerializer(transactions, many=True)
+def get_accounts(request):
+  accounts = Account.objects.all()
+  serializer = AccountSerializer(accounts, many=True)
   return Response(serializer.data)
 
 @api_view(['POST'])
-def create_transaction(request):
-  serializer = TransactionSerializer(data=request.data)
+def create_account(request):
+  serializer = AccountSerializer(data=request.data)
   if serializer.is_valid():
     serializer.save()
     return Response(serializer.data, status=status.HTTP_201_CREATED)
   return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET', 'PUT', 'DELETE'])
-def transaction_detail(request, pk):
+def account_detail(request, pk):
   try:
-    transaction = Transaction.objects.get(pk=pk)
-  except Transaction.DoesNotExist:
+    account = Account.objects.get(pk=pk)
+  except Account.DoesNotExist:
       return Response(status.HTTP_404_NOT_FOUND)
   
   if request.method == 'GET':
-    serializer = TransactionSerializer(transaction)
+    serializer = AccountSerializer(account)
     return Response(serializer.data)
   
   elif request.method == 'PUT':
-    serializer = TransactionSerializer(transaction, data=request.data)
+    serializer = AccountSerializer(account, data=request.data)
     if serializer.is_valid():
       serializer.save()
       return Response(serializer.data)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
   
   elif request.method == 'DELETE':
-    transaction.delete()
+    account.delete()
     return Response(status=status.HTTP_204_NO_CONTENT)
