@@ -1,6 +1,6 @@
 import { StyleSheet, View, Text } from "react-native";
 import { globalStyles } from "../styles/global";
-import { formatCurrency } from "../utils/formats";
+import formatCurrency from "../utils/formats";
 
 type CardProps = {
   id: number;
@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#16213e',
     borderRadius: 12,
     padding: 16,
-    width: '47%',
+    width: '48%',
   },
   balance: {
     fontSize: 20,

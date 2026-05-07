@@ -1,10 +1,11 @@
 import { useState, useEffect, useMemo } from "react";
 import getAccounts from "../services/account.service";
+import getTransactions from "../services/transaction.service";
 import { StyleSheet, ScrollView, Text, Pressable, View } from "react-native";
 import Card from "./Cards";
 import { colors, globalStyles } from "../styles/global";
 import { Ionicons } from "@expo/vector-icons";
-import { formatCurrency } from "../utils/formats";
+import formatCurrency from "../utils/formats";
 
 type Account = {
   id: number;
@@ -14,10 +15,21 @@ type Account = {
   source: string;
 };
 
+type Transaction = {
+  id: number;
+  name: string;
+  transaction_type: string;
+  amount: number;
+  category: string;
+  source: string;
+  created_at: Date;
+}
+
 export default function LandingCards() {
   const [showBalance, setShowBalance] = useState(true);
   const [totalNetWorth, setTotalNetWorth] = useState(0);
   const [accounts, setAccounts] = useState<Account[]>([]);
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [showAllAccounts, setShowAllAccounts] = useState(false);
 
   const onPress = (type: string) => {
@@ -43,7 +55,17 @@ export default function LandingCards() {
       }
     };
 
+    const fetchTransactions = async () => {
+      try {
+        const data = await getTransactions({ timeFrame: 'recent' });
+        setTransactions(data);
+      } catch (error) {
+        setTransactions([]);
+      }
+    };
+
     fetchAccounts();
+    fetchTransactions();
   }, []);
 
   useMemo(() => {
@@ -107,14 +129,14 @@ export default function LandingCards() {
           </View>
         </View>
       </View>
-
-      <View style={[styles.row, { marginBottom: 10, marginHorizontal: 4 }]}>
-        <Text style={[globalStyles.sectionTitle]}>
-          Your Accounts ({accounts.length})
-        </Text>
-        <View style={styles.row}>
-          <Text style={{ color: colors.textSecondary, marginRight: 2 }}>{showAllAccounts ? "Less" : "More"}</Text>
-          <Pressable onPress={() => onPress("account")}>
+      
+      <View>
+        <View style={[styles.row, { marginBottom: 10, marginHorizontal: 2 }]}>
+          <Text style={[globalStyles.sectionTitle]}>
+            Your Accounts ({accounts.length})
+          </Text>
+          <Pressable style={styles.row} onPress={() => onPress("account")}>
+            <Text style={{ color: colors.textSecondary, marginRight: 2 }}>{showAllAccounts ? "Less" : "More"}</Text>
             <Ionicons
               name={showAllAccounts ? "chevron-up" : "chevron-down"}
               size={20}
@@ -122,39 +144,38 @@ export default function LandingCards() {
             />
           </Pressable>
         </View>
+
+        <View style={[styles.grid, { marginBottom: 10 }]}>
+          {accounts
+            .slice(0, showAllAccounts ? accounts.length : 4)
+            .map((account) => (
+              <Card
+                key={account.id}
+                id={account.id}
+                name={account.name}
+                balance={account.balance}
+                source={account.source}
+                category={account.category}
+                showBalance={showBalance}
+              />
+            ))}
+        </View>
       </View>
 
-      <View style={[styles.grid, { marginBottom: 10 }]}>
-        {accounts
-          .slice(0, showAllAccounts ? accounts.length : 4)
-          .map((account) => (
-            <Card
-              key={account.id}
-              id={account.id}
-              name={account.name}
-              balance={account.balance}
-              source={account.source}
-              category={account.category}
-              showBalance={showBalance}
-            />
-          ))}
-      </View>
-
-      <ScrollView>
+      <View>
         <Text style={[globalStyles.sectionTitle, { marginBottom: 10 }]}>
           Recent Transactions
         </Text>
-        <Text style={{ color: "#fff" }}>Hello</Text>
-        <Text style={{ color: "#fff" }}>Hello</Text>
-        <Text style={{ color: "#fff" }}>Hello</Text>
-        <Text style={{ color: "#fff" }}>Hello</Text>
-        <Text style={{ color: "#fff" }}>Hello</Text>
-        <Text style={{ color: "#fff" }}>Hello</Text>
-        <Text style={{ color: "#fff" }}>Hello</Text>
-        <Text style={{ color: "#fff" }}>Hello</Text>
-        <Text style={{ color: "#fff" }}>Hello</Text>
-        <Text style={{ color: "#fff" }}>Hello</Text>
-      </ScrollView>
+        {transactions.map((t) => (
+          <Text
+            key={t.id}
+            style={{ color: '#fff' }}
+          >
+            {t.name} - {t.amount}: {t.category} ({t.source})
+            {new Date(t.created_at).toDateString()}
+          </Text>
+        ))}
+      </View>
     </ScrollView>
   );
 }
@@ -169,7 +190,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#16213e",
     borderRadius: 12,
     padding: 16,
-    width: "98%",
+    width: "100%",
     marginBottom: 15,
   },
   balance: {

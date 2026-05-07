@@ -11,6 +11,20 @@ import api from '../lib/api';
 // };
 
 export default async function getAccounts() {
-  const res = await api.get('/accounts/');
-  return res.data;
+  try {
+    const res = await api.get('/accounts');
+
+    return res.data;
+  } catch (error) {
+    if (error instanceof Error) {
+      return {
+        message: 'Error',
+        error: error.message,
+      };
+    }
+
+    return {
+      message: 'Unknown error',
+    };
+  }
 };
