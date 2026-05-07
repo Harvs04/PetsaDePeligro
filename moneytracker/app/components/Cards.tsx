@@ -1,6 +1,6 @@
 import { StyleSheet, View, Text } from "react-native";
 import { globalStyles } from "../styles/global";
-import formatCurrency from "../utils/formats";
+import { formatCurrency } from "../utils/formats";
 
 type CardProps = {
   id: number;

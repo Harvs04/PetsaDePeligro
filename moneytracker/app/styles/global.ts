@@ -47,4 +47,10 @@ export const globalStyles = StyleSheet.create({
     color: colors.textSecondary,
     fontSize: 14,
   },
+  row: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    alignContent: "center",
+  },
 });

@@ -5,7 +5,8 @@ import { StyleSheet, ScrollView, Text, Pressable, View } from "react-native";
 import Card from "./Cards";
 import { colors, globalStyles } from "../styles/global";
 import { Ionicons } from "@expo/vector-icons";
-import formatCurrency from "../utils/formats";
+import { formatCurrency } from "../utils/formats";
+import TransactionCards from "./TransactionCards";
 
 type Account = {
   id: number;
@@ -79,7 +80,7 @@ export default function LandingCards() {
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <View style={styles.card}>
-        <View style={styles.row}>
+        <View style={globalStyles.row}>
           <Text style={globalStyles.label}>Total Net Worth</Text>
           <Pressable onPress={() => onPress("balance")}>
             {showBalance ? (
@@ -131,11 +132,11 @@ export default function LandingCards() {
       </View>
       
       <View>
-        <View style={[styles.row, { marginBottom: 10, marginHorizontal: 2 }]}>
+        <View style={[globalStyles.row, { marginBottom: 10, marginHorizontal: 2 }]}>
           <Text style={[globalStyles.sectionTitle]}>
             Your Accounts ({accounts.length})
           </Text>
-          <Pressable style={styles.row} onPress={() => onPress("account")}>
+          <Pressable style={globalStyles.row} onPress={() => onPress("account")}>
             <Text style={{ color: colors.textSecondary, marginRight: 2 }}>{showAllAccounts ? "Less" : "More"}</Text>
             <Ionicons
               name={showAllAccounts ? "chevron-up" : "chevron-down"}
@@ -162,20 +163,7 @@ export default function LandingCards() {
         </View>
       </View>
 
-      <View>
-        <Text style={[globalStyles.sectionTitle, { marginBottom: 10 }]}>
-          Recent Transactions
-        </Text>
-        {transactions.map((t) => (
-          <Text
-            key={t.id}
-            style={{ color: '#fff' }}
-          >
-            {t.name} - {t.amount}: {t.category} ({t.source})
-            {new Date(t.created_at).toDateString()}
-          </Text>
-        ))}
-      </View>
+      <TransactionCards transactions={transactions} />
     </ScrollView>
   );
 }
@@ -198,12 +186,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#ffffff",
     marginTop: 4,
-  },
-  row: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    alignContent: "center",
   },
   button: {
     width: 54,
