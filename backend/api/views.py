@@ -1,8 +1,10 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-from .models import User, Account, Action
-from .serializer import UserSerializer, AccountSerializer, ActionSerializer
+from .models import User, Account, Transaction
+from .serializer import UserSerializer, AccountSerializer, TransactionSerializer
+from django.utils import timezone
+from datetime import timedelta
 
 @api_view(['GET'])
 def get_users(request):
@@ -78,16 +80,51 @@ def account_detail(request, pk):
     return Response(status=status.HTTP_204_NO_CONTENT)
   
   
-# ACTIONS
+# TRANSACTIONS
 @api_view(['GET'])
-def get_actions(request):
-  actions = Action.objects.all()
-  serializer = ActionSerializer(actions, many=True)
+def get_transactions(request):
+
+  time_frame = request.GET.get('timeFrame', '').strip('/')
+  print(time_frame)
+  transactions = Transaction.objects.all()
+
+  now = timezone.now()
+  
+  if time_frame == 'recent':
+    transactions = transactions.order_by('-created_at')[:5]
+  
+  elif time_frame == 'today':
+    transactions = transactions.filter(
+      created_at__date=now.date()
+    )
+
+  elif time_frame == 'yesterday':
+    transactions = transactions.filter(
+      created_at__date=now.date() - timedelta(days=1)
+    )
+
+  elif time_frame == 'last-week':
+    transactions = transactions.filter(
+        created_at__date=now.date() - timedelta(days=7)
+    )
+
+  elif time_frame == 'last-month':
+    transactions = transactions.filter(
+        created_at__date=now.date() - timedelta(days=30)
+    )
+
+  elif time_frame == 'last-year':
+    transactions = transactions.filter(
+        created_at__date=now.date() - timedelta(days=365)
+    )
+
+  serializer = TransactionSerializer(transactions, many=True)
+
   return Response(serializer.data)
 
 @api_view(['POST'])
-def create_action(request):
-  serializer = ActionSerializer(data=request.data)
+def create_transaction(request):
+  serializer = TransactionSerializer(data=request.data)
   if serializer.is_valid():
     serializer.save()
     return Response(serializer.data, status=status.HTTP_201_CREATED)

@@ -19,16 +19,16 @@ class Account(models.Model):
   def __str__(self):
     return self.name
   
-class Action(models.Model):
-  class ActionType(models.TextChoices):
+class Transaction(models.Model):
+  class TransactionType(models.TextChoices):
     EXPENSE = "EXPENSE", "Expense"
     INCOME = "INCOME", "Income"
     TRANSFER = "TRANSFER", "Transfer"
 
   name = models.CharField(max_length=50)
-  action_type = models.CharField(
+  transaction_type = models.CharField(
     max_length=10,
-    choices=ActionType.choices
+    choices=TransactionType.choices
   )
   amount = models.IntegerField()
   category = models.CharField(max_length=20)
@@ -37,4 +37,4 @@ class Action(models.Model):
   updated_at = models.DateTimeField(auto_now=True)
 
   def __str__(self):
-    return f"{self.name} ({self.action_type})"
+    return f"{self.name} ({self.transactions_type})"
