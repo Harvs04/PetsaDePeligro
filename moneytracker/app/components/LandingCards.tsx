@@ -81,7 +81,7 @@ export default function LandingCards() {
     <ScrollView showsVerticalScrollIndicator={false}>
       <View style={styles.card}>
         <View style={globalStyles.row}>
-          <Text style={globalStyles.label}>Total Net Worth</Text>
+          <Text style={globalStyles.label}>Current Balance</Text>
           <Pressable onPress={() => onPress("balance")}>
             {showBalance ? (
               <Ionicons
@@ -101,7 +101,7 @@ export default function LandingCards() {
           <View style={styles.buttonCol}>
             <Pressable style={styles.button}>
               <Ionicons
-                name="wallet-outline"
+                name="arrow-down-outline"
                 size={24}
                 color={colors.pressableIcon}
               />
@@ -111,7 +111,7 @@ export default function LandingCards() {
           <View style={styles.buttonCol}>
             <Pressable style={styles.button}>
               <Ionicons
-                name="cart-outline"
+                name="pricetag-outline"
                 size={24}
                 color={colors.pressableIcon}
               />
@@ -121,7 +121,7 @@ export default function LandingCards() {
           <View style={styles.buttonCol}>
             <Pressable style={styles.button}>
               <Ionicons
-                name="arrow-redo-outline"
+                name="arrow-up-outline"
                 size={24}
                 color={colors.pressableIcon}
               />
@@ -163,7 +163,7 @@ export default function LandingCards() {
         </View>
       </View>
 
-      <TransactionCards transactions={transactions} />
+      <TransactionCards preview={true} transactions={transactions} />
     </ScrollView>
   );
 }
@@ -185,7 +185,6 @@ const styles = StyleSheet.create({
     fontSize: 32,
     fontWeight: "bold",
     color: "#ffffff",
-    marginTop: 4,
   },
   button: {
     width: 54,

@@ -4,11 +4,13 @@ export const colors = {
   background: "#1a1a2e",
   header: "#242444",
   surface: "#2a2a4a",
-  primary: "#4fc3f7",
+  primary: "#3b82f6",
   text: "#ffffff",
   textSecondary: "#a0a0b0",
   alert: "#ff5252",
   pressableIcon: "#fff",
+  income: "#4ade80",
+  expense: "#ef4444" 
 };
 
 export const globalStyles = StyleSheet.create({
@@ -36,8 +38,7 @@ export const globalStyles = StyleSheet.create({
   date: {
     fontSize: 14,
     color: colors.textSecondary,
-    marginTop: 4,
-    marginBottom: 30,
+    marginTop: 4
   },
   label: {
     fontSize: 14,

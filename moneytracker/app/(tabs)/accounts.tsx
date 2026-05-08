@@ -1,12 +1,10 @@
-import { useCallback, useState, useMemo, useEffect } from "react";
-import { ScrollView, View, RefreshControl } from "react-native";
+import { useState, useCallback, useEffect, useMemo } from "react";
+import { RefreshControl, View, ScrollView, Text } from "react-native";
 import getAccounts from "../services/account.service";
-import getTransactions from "../services/transaction.service";
-import Accounts from "../components/Accounts";
-import TransactionCards from "../components/TransactionCards";
-import LandingHeader from "../components/LandingHeader";
-import CurrentBalance from "../components/CurrentBalance";
 import { globalStyles } from "../styles/global";
+import Accounts from "../components/Accounts";
+import CurrentBalance from "../components/CurrentBalance";
+import HeaderText from "../components/Header";
 
 type Account = {
   id: number;
@@ -16,34 +14,22 @@ type Account = {
   source: string;
 };
 
-type Transaction = {
-  id: number;
-  name: string;
-  transaction_type: string;
-  amount: number;
-  category: string;
-  source: string;
-  created_at: Date;
-};
-
-export default function HomePage() {
+export default function AccountsPage() {
   const [refreshing, setRefreshing] = useState<boolean>(false);
-  const [showBalance, setShowBalance] = useState<boolean>(true);
   const [balance, setBalance] = useState<number>(0);
+  const [showBalance, setShowBalance] = useState<boolean>(true);
   const [accounts, setAccounts] = useState<Account[]>([]);
-  const [transactions, setTransactions] = useState<Transaction[]>([]);
+
+  const onPress = useCallback(() => {
+    setShowBalance((prev) => !prev);
+  }, []);
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     fetchAccounts();
-    fetchTransactions();
     setTimeout(() => {
       setRefreshing(false);
     }, 2000);
-  }, []);
-
-  const onPress = useCallback(() => {
-    setShowBalance((prev) => !prev);
   }, []);
 
   const fetchAccounts = async () => {
@@ -55,18 +41,8 @@ export default function HomePage() {
     }
   };
 
-  const fetchTransactions = async () => {
-    try {
-      const data = await getTransactions({ timeFrame: "recent" });
-      setTransactions(data);
-    } catch (error) {
-      setTransactions([]);
-    }
-  };
-
   useEffect(() => {
     fetchAccounts();
-    fetchTransactions();
   }, []);
 
   useMemo(() => {
@@ -79,25 +55,27 @@ export default function HomePage() {
 
   return (
     <View style={globalStyles.container}>
-      <LandingHeader />
+      <HeaderText>Accounts</HeaderText>
       <ScrollView
         showsVerticalScrollIndicator={false}
         refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+          ></RefreshControl>
         }
       >
         <CurrentBalance
           balance={balance}
           showBalance={showBalance}
-          inHomePage={true}
+          inHomePage={false}
           onPress={onPress}
         />
         <Accounts
-          preview={true}
+          preview={false}
           accounts={accounts}
           showBalance={showBalance}
         />
-        <TransactionCards preview={true} transactions={transactions} />
       </ScrollView>
     </View>
   );

@@ -16,7 +16,7 @@ export default function LandingHeader() {
     hour < 12 ? "Good Morning" : hour < 18 ? "Good Afternoon" : "Good Evening";
 
   return (
-    <View>
+    <View style={{ marginBottom: 15 }}>
       <Text style={globalStyles.title}>{greeting}, Harvey!</Text>
       <Text style={globalStyles.date}>{currentDate}</Text>
     </View>

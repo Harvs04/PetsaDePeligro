@@ -1,6 +1,6 @@
 import { StyleSheet, View, Text, Image } from "react-native";
-import { globalStyles, colors } from "../styles/global";
 import { Link } from "expo-router";
+import { globalStyles, colors } from "../styles/global";
 import { formatCurrency, formatTime } from "../utils/formats";
 import { brands } from "../utils/logos";
 
@@ -15,18 +15,19 @@ type TransactionProps = {
 };
 
 type Props = {
+  preview: boolean;
   transactions: TransactionProps[];
 };
 
-export default function TransactionCards({ transactions }: Props) {
+export default function TransactionCards({ preview, transactions }: Props) {
   return (
     <>
       <View style={{ marginBottom: 10 }}>
         <View
           style={[globalStyles.row, { marginBottom: 10, marginHorizontal: 2 }]}
         >
-          <Text style={[globalStyles.sectionTitle]}>Recent Transactions</Text>
-          <Link href="/">
+          <Text style={[globalStyles.sectionTitle]}>{preview ? 'Recent Transactions' : ''}</Text>
+          <Link href="/transactions">
             <Text
               style={{
                 color: colors.textSecondary,
@@ -42,11 +43,10 @@ export default function TransactionCards({ transactions }: Props) {
         <View style={styles.card}>
           {transactions.map((t) => (
             <View key={t.id} style={styles.transactionCard}>
-              <View style={{ flexDirection: "row",  alignItems: 'center', gap: 10 }}>
-                <Image
-                  source={brands[t.source]}
-                  style={globalStyles.logo}
-                />
+              <View
+                style={{ flexDirection: "row", alignItems: "center", gap: 10 }}
+              >
+                <Image source={brands[t.source]} style={globalStyles.logo} />
                 <View style={{ flexDirection: "column", gap: 2 }}>
                   <Text
                     style={{
@@ -66,10 +66,10 @@ export default function TransactionCards({ transactions }: Props) {
                 style={{
                   color:
                     t.transaction_type === "EXPENSE"
-                      ? "#ef4444"
+                      ? colors.expense
                       : t.transaction_type === "INCOME"
-                        ? "#4ade80"
-                        : "#fff",
+                        ? colors.income
+                        : colors.text,
                 }}
               >
                 {t.transaction_type === "EXPENSE"
