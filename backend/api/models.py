@@ -28,7 +28,7 @@ class Transaction(models.Model):
   transaction_type = models.CharField(max_length=10, choices=TransactionType.choices)
   transaction_category = models.CharField(max_length=30, choices=Category.choices)
   amount = models.IntegerField()
-  account_category = models.CharField(max_length=20, choices=AccountCategory.choices)
+  account = models.ForeignKey('Account', on_delete=models.CASCADE, related_name='transactions')
   source = models.CharField(max_length=20, choices=Source.choices)
   created_at = models.DateTimeField(auto_now_add=True)
   updated_at = models.DateTimeField(auto_now=True)
