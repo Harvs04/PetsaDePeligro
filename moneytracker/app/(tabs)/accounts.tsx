@@ -1,10 +1,12 @@
 import { useState, useCallback, useEffect, useMemo } from "react";
 import { RefreshControl, View, ScrollView, Text } from "react-native";
+import { Picker } from "@react-native-picker/picker";
 import getAccounts from "../services/account.service";
-import { globalStyles } from "../styles/global";
+import { colors, globalStyles } from "../styles/global";
 import Accounts from "../components/Accounts";
 import CurrentBalance from "../components/CurrentBalance";
 import HeaderText from "../components/Header";
+import { categories } from "../utils/constants";
 
 type Account = {
   id: number;
@@ -19,6 +21,9 @@ export default function AccountsPage() {
   const [balance, setBalance] = useState<number>(0);
   const [showBalance, setShowBalance] = useState<boolean>(true);
   const [accounts, setAccounts] = useState<Account[]>([]);
+  const [selectAccountCategory, setSelectAccountCategory] = useState<
+    string | null
+  >(null);
 
   const onPress = useCallback(() => {
     setShowBalance((prev) => !prev);
@@ -71,6 +76,18 @@ export default function AccountsPage() {
           inHomePage={false}
           onPress={onPress}
         />
+        <Picker
+          selectedValue={selectAccountCategory}
+          onValueChange={(itemValue) => setSelectAccountCategory(itemValue)}
+          dropdownIconColor={colors.text}
+          dropdownIconRippleColor={colors.textSecondary}
+          style={{ color: colors.text }}
+        >
+          <Picker.Item label="Select category..." value={null} />
+          {categories.map((cat, idx) => (
+            <Picker.Item key={idx} label={cat.label} value={cat.value} />
+          ))}
+        </Picker>
         <Accounts
           preview={false}
           accounts={accounts}
