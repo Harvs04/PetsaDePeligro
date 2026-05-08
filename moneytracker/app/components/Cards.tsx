@@ -21,7 +21,7 @@ export default function Card({
   showBalance,
 }: CardProps) {
   return (
-    <View style={[styles.card]} key={String(id)}>
+    <View style={[globalStyles.card]} key={String(id)}>
       <View
         style={{
           flexDirection: "row",
@@ -45,12 +45,6 @@ export default function Card({
 }
 
 const styles = StyleSheet.create({
-  card: {
-    backgroundColor: "#16213e",
-    borderRadius: 12,
-    padding: 16,
-    width: "48%",
-  },
   balance: {
     fontSize: 20,
     fontWeight: "bold",

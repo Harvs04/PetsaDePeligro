@@ -20,6 +20,12 @@ export const globalStyles = StyleSheet.create({
     paddingTop: 60,
     paddingHorizontal: 20,
   },
+  card: {
+    backgroundColor: "#16213e",
+    borderRadius: 12,
+    padding: 16,
+    width: "100%",
+  },
   title: {
     fontSize: 24,
     fontWeight: "bold",

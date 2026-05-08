@@ -40,7 +40,7 @@ export default function TransactionCards({ preview, transactions }: Props) {
           </Link>
         </View>
 
-        <View style={styles.card}>
+        <View style={[globalStyles.card, { paddingVertical: 12, }]}>
           {transactions.map((t) => (
             <View key={t.id} style={styles.transactionCard}>
               <View
@@ -88,13 +88,6 @@ export default function TransactionCards({ preview, transactions }: Props) {
 }
 
 const styles = StyleSheet.create({
-  card: {
-    backgroundColor: "#16213e",
-    borderRadius: 12,
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    width: "100%",
-  },
   transactionCard: {
     flexDirection: "row",
     justifyContent: "space-between",

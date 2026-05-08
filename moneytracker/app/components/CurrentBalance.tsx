@@ -24,7 +24,7 @@ export default function CurrentBalance({
 }: Props) {
   return (
     <View>
-      <View style={styles.card}>
+      <View style={[globalStyles.card, { marginBottom: 15, }]}>
         <View style={globalStyles.row}>
           <Text style={globalStyles.label}>Current Balance</Text>
           <Pressable onPress={onPress}>
@@ -82,13 +82,6 @@ export default function CurrentBalance({
 }
 
 const styles = StyleSheet.create({
-  card: {
-    backgroundColor: "#16213e",
-    borderRadius: 12,
-    padding: 16,
-    width: "100%",
-    marginBottom: 15,
-  },
   balance: {
     fontSize: 32,
     fontWeight: "bold",
