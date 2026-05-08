@@ -2,6 +2,7 @@ import { StyleSheet, View, Text, Image } from "react-native";
 import { globalStyles, colors } from "../styles/global";
 import { Link } from "expo-router";
 import { formatCurrency, formatTime } from "../utils/formats";
+import { brands } from "../utils/logos";
 
 type TransactionProps = {
   id: number;
@@ -18,8 +19,6 @@ type Props = {
 };
 
 export default function TransactionCards({ transactions }: Props) {
-  const imgName = 'maribank';
-
   return (
     <>
       <View style={{ marginBottom: 10 }}>
@@ -43,10 +42,10 @@ export default function TransactionCards({ transactions }: Props) {
         <View style={styles.card}>
           {transactions.map((t) => (
             <View key={t.id} style={styles.transactionCard}>
-              <View style={{ flexDirection: "row",  alignItems: 'flex-start', gap: 10 }}>
+              <View style={{ flexDirection: "row",  alignItems: 'center', gap: 10 }}>
                 <Image
-                  source={require(`../../assets/accounts/${imgName}.png`)}
-                  style={{ width: 40, height: 40, borderRadius: 100 }}
+                  source={brands[t.source]}
+                  style={globalStyles.logo}
                 />
                 <View style={{ flexDirection: "column", gap: 2 }}>
                   <Text

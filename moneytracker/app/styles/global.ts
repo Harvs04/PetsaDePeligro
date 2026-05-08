@@ -1,14 +1,14 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from "react-native";
 
 export const colors = {
-  background: '#1a1a2e',
-  header: '#242444',
-  surface: '#2a2a4a',
-  primary: '#4fc3f7',
-  text: '#ffffff',
-  textSecondary: '#a0a0b0',
-  alert: '#ff5252',
-  pressableIcon: '#fff',
+  background: "#1a1a2e",
+  header: "#242444",
+  surface: "#2a2a4a",
+  primary: "#4fc3f7",
+  text: "#ffffff",
+  textSecondary: "#a0a0b0",
+  alert: "#ff5252",
+  pressableIcon: "#fff",
 };
 
 export const globalStyles = StyleSheet.create({
@@ -20,18 +20,18 @@ export const globalStyles = StyleSheet.create({
   },
   title: {
     fontSize: 24,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     color: colors.text,
   },
   sectionTitle: {
     fontSize: 18,
-    fontWeight: '600',
+    fontWeight: "600",
     color: colors.textSecondary,
   },
   header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   date: {
     fontSize: 14,
@@ -41,7 +41,7 @@ export const globalStyles = StyleSheet.create({
   },
   label: {
     fontSize: 14,
-    color: '#a0a0b0',
+    color: "#a0a0b0",
   },
   empty: {
     color: colors.textSecondary,
@@ -52,5 +52,10 @@ export const globalStyles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     alignContent: "center",
+  },
+  logo: {
+    width: 30,
+    height: 30,
+    borderRadius: 100,
   },
 });
