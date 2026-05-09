@@ -1,12 +1,17 @@
-import { useState, useCallback, useEffect, useMemo } from "react";
+import {
+  useState,
+  useCallback,
+  useEffect,
+  useMemo,
+  useContext,
+  createContext,
+} from "react";
 import { RefreshControl, View, ScrollView, Text } from "react-native";
-import { Picker } from "@react-native-picker/picker";
 import getAccounts from "../services/account.service";
-import { colors, globalStyles } from "../styles/global";
+import { globalStyles } from "../styles/global";
 import Accounts from "../components/Accounts";
 import CurrentBalance from "../components/CurrentBalance";
 import HeaderText from "../components/Header";
-import { categories } from "../utils/constants";
 
 type Account = {
   id: number;
@@ -16,14 +21,20 @@ type Account = {
   source: string;
 };
 
+type AccountContextType = {
+  selectAccountCategory: string | null;
+  handleSelect: (value: string | null) => void;
+};
+
+export const AccountContext = createContext<AccountContextType | null>(null);
+
 export default function AccountsPage() {
   const [refreshing, setRefreshing] = useState<boolean>(false);
-  const [balance, setBalance] = useState<number>(0);
   const [showBalance, setShowBalance] = useState<boolean>(true);
   const [accounts, setAccounts] = useState<Account[]>([]);
-  const [selectAccountCategory, setSelectAccountCategory] = useState<
-    string | null
-  >(null);
+  const [filterAccounts, setFilterAccounts] = useState<Account[]>([]);
+  const [selectAccountCategory, setSelectAccountCategory] =
+    useState<string>("ALL");
 
   const onPress = useCallback(() => {
     setShowBalance((prev) => !prev);
@@ -31,18 +42,30 @@ export default function AccountsPage() {
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
+    setSelectAccountCategory("ALL");
     fetchAccounts();
     setTimeout(() => {
       setRefreshing(false);
     }, 2000);
   }, []);
 
+  const handleSelect = (itemValue: string | null) => {
+    setSelectAccountCategory(itemValue ?? "ALL");
+    setFilterAccounts(
+      !itemValue || itemValue === "ALL"
+        ? accounts
+        : accounts.filter((item: Account) => item.category === itemValue),
+    );
+  };
+
   const fetchAccounts = async () => {
     try {
       const data = await getAccounts();
       setAccounts(data);
+      setFilterAccounts(data);
     } catch (error) {
       setAccounts([]);
+      setFilterAccounts([]);
     }
   };
 
@@ -50,17 +73,19 @@ export default function AccountsPage() {
     fetchAccounts();
   }, []);
 
-  useMemo(() => {
-    const balance = accounts.reduce(
-      (accumulator, account) => accumulator + account.balance,
-      0,
-    );
-    setBalance(balance);
-  }, [accounts]);
+  const balance = useMemo(
+    () =>
+      filterAccounts.reduce(
+        (accumulator, account) => accumulator + account.balance,
+        0,
+      ),
+    [filterAccounts],
+  );
 
   return (
     <View style={globalStyles.container}>
       <HeaderText>Accounts</HeaderText>
+      <Text style={{ color: "#fff" }}>{selectAccountCategory}</Text>
       <ScrollView
         showsVerticalScrollIndicator={false}
         refreshControl={
@@ -76,23 +101,18 @@ export default function AccountsPage() {
           inHomePage={false}
           onPress={onPress}
         />
-        <Picker
-          selectedValue={selectAccountCategory}
-          onValueChange={(itemValue) => setSelectAccountCategory(itemValue)}
-          dropdownIconColor={colors.text}
-          dropdownIconRippleColor={colors.textSecondary}
-          style={{ color: colors.text }}
+        <AccountContext.Provider
+          value={{
+            selectAccountCategory,
+            handleSelect,
+          }}
         >
-          <Picker.Item label="Select category..." value={null} />
-          {categories.map((cat, idx) => (
-            <Picker.Item key={idx} label={cat.label} value={cat.value} />
-          ))}
-        </Picker>
-        <Accounts
-          preview={false}
-          accounts={accounts}
-          showBalance={showBalance}
-        />
+          <Accounts
+            preview={false}
+            accounts={filterAccounts}
+            showBalance={showBalance}
+          />
+        </AccountContext.Provider>
       </ScrollView>
     </View>
   );

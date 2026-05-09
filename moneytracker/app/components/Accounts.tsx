@@ -1,7 +1,12 @@
+import { useCallback, useContext } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Link } from "expo-router";
 import { colors, globalStyles } from "../styles/global";
 import Card from "./Cards";
+import { categories } from "../utils/constants";
+import { Dropdown } from "./Dropdown";
+import { AccountContext } from "../(tabs)/accounts";
+import { EmptyPage } from "./Empty";
 
 type Account = {
   id: number;
@@ -18,13 +23,23 @@ type Props = {
 };
 
 export default function Accounts({ preview, showBalance, accounts }: Props) {
+  const context = useContext(AccountContext);
+  const selectAccountCategory = preview
+    ? null
+    : (context?.selectAccountCategory ?? null);
+  const handleSelect = preview
+    ? () => {}
+    : (context?.handleSelect ?? (() => {}));
+
   return (
     <View>
       <View
         style={[globalStyles.row, { marginBottom: 10, marginHorizontal: 2 }]}
       >
-        <Text style={[globalStyles.sectionTitle]}>Your Accounts</Text>
-        {preview && (
+        <Text style={[globalStyles.sectionTitle]}>
+          {preview ? "Your Accounts" : "Group By:"}
+        </Text>
+        {preview ? (
           <Link href="/accounts">
             <Text
               style={{
@@ -36,26 +51,36 @@ export default function Accounts({ preview, showBalance, accounts }: Props) {
               View All
             </Text>
           </Link>
+        ) : (
+          <Dropdown
+            selectedItem={selectAccountCategory}
+            setSelectedItem={handleSelect}
+            data={categories}
+          />
         )}
       </View>
 
       <View style={[styles.grid, { marginBottom: 10 }]}>
-        {accounts.slice(0, !preview ? accounts.length : 4).map((account) => (
-          <TouchableOpacity
-            key={account.id}
-            activeOpacity={0.8}
-            style={{ width: "48%" }}
-          >
-            <Card
-              id={account.id}
-              name={account.name}
-              balance={account.balance}
-              source={account.source}
-              category={account.category}
-              showBalance={showBalance}
-            />
-          </TouchableOpacity>
-        ))}
+        {accounts.length > 0 ? (
+          accounts.slice(0, !preview ? accounts.length : 4).map((account) => (
+            <TouchableOpacity
+              key={account.id}
+              activeOpacity={0.5}
+              style={{ width: "48%" }}
+            >
+              <Card
+                id={account.id}
+                name={account.name}
+                balance={account.balance}
+                source={account.source}
+                category={account.category}
+                showBalance={showBalance}
+              />
+            </TouchableOpacity>
+          ))
+        ) : (
+          <EmptyPage />
+        )}
       </View>
     </View>
   );

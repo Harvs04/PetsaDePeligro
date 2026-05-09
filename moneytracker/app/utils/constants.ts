@@ -4,14 +4,14 @@ type Category = {
 };
 
 export const categories: Category[] = [
-  { value: "cash", label: "Cash" },
-  { value: "savings", label: "Savings" },
-  { value: "checking", label: "Checking" },
-  { value: "credit", label: "Credit" },
-  { value: "wallet", label: "E-Wallet" },
-  { value: "investment", label: "Investment" },
-  { value: "loan", label: "Loan" },
-  { value: "insurance", label: "Insurance" },
-  { value: "pension", label: "Pension" },
-  { value: "cryptocurrency", label: "Cryptocurrency" },
+  { value: "CASH", label: "Cash" },
+  { value: "SAVINGS", label: "Savings" },
+  { value: "CHECKING", label: "Checking" },
+  { value: "CREDIT", label: "Credit" },
+  { value: "WALLET", label: "E-Wallet" },
+  { value: "INVESTMENT", label: "Investment" },
+  { value: "LOAN", label: "Loan" },
+  { value: "INSURANCE", label: "Insurance" },
+  { value: "PENSION", label: "Pension" },
+  { value: "CRYPTOCURRENCY", label: "Cryptocurrency" },
 ];
