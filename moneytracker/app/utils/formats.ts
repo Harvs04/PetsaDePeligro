@@ -19,3 +19,11 @@ export function formatTime(time: Date): string {
     hour12: true,
   });
 }
+
+export function formatDate(time: Date): string {
+  return new Date(time).toLocaleDateString(undefined, {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  });
+}
