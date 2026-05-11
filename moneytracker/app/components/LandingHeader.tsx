@@ -1,13 +1,12 @@
 import { Text, View } from "react-native";
 import { globalStyles } from "../styles/global";
+import { formatDate } from "../utils/formats";
 
 export default function LandingHeader() {
   const now = new Date();
 
   const currentDate = now.toLocaleDateString("en-US", {
     weekday: "long",
-    month: "long",
-    day: "numeric",
   });
 
   const hour = now.getHours();
@@ -18,7 +17,7 @@ export default function LandingHeader() {
   return (
     <View style={{ marginBottom: 15 }}>
       <Text style={globalStyles.title}>{greeting}, Harvey!</Text>
-      <Text style={globalStyles.date}>{currentDate}</Text>
+      <Text style={globalStyles.date}>{`${currentDate}, ${formatDate(new Date())}`}</Text>
     </View>
   );
 }
