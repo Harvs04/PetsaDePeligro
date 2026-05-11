@@ -3,15 +3,14 @@ import {
   useCallback,
   useEffect,
   useMemo,
-  useContext,
-  createContext,
 } from "react";
-import { RefreshControl, View, ScrollView, Text } from "react-native";
+import { RefreshControl, View, ScrollView } from "react-native";
 import getAccounts from "../services/account.service";
 import { globalStyles } from "../styles/global";
 import Accounts from "../components/Accounts";
 import CurrentBalance from "../components/CurrentBalance";
 import HeaderText from "../components/Header";
+import { AccountContext } from "../contexts/account";
 
 type Account = {
   id: number;
@@ -20,13 +19,6 @@ type Account = {
   category: string;
   source: string;
 };
-
-type AccountContextType = {
-  selectAccountCategory: string | null;
-  handleSelect: (value: string | null) => void;
-};
-
-export const AccountContext = createContext<AccountContextType | null>(null);
 
 export default function AccountsPage() {
   const [refreshing, setRefreshing] = useState<boolean>(false);
@@ -83,9 +75,8 @@ export default function AccountsPage() {
   );
 
   return (
-    <View style={globalStyles.container}>
-      <HeaderText>Accounts</HeaderText>
-      <Text style={{ color: "#fff" }}>{selectAccountCategory}</Text>
+    <View style={[globalStyles.container]}>
+      <HeaderText style={{ marginBottom: 15 }}>Accounts</HeaderText>
       <ScrollView
         showsVerticalScrollIndicator={false}
         refreshControl={

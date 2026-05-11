@@ -24,6 +24,7 @@ export function Dropdown({ selectedItem, setSelectedItem, data }: Props) {
         overflow: "hidden",
         justifyContent: "center",
         paddingHorizontal: 4,
+        marginLeft: 'auto'
       }}
     >
       <Picker

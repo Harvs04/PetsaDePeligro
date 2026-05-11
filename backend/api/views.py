@@ -86,12 +86,15 @@ def get_transactions(request):
 
   time_frame = request.GET.get('timeFrame', '').strip('/')
   print(time_frame)
-  transactions = Transaction.objects.all()
+  transactions = Transaction.objects.all().order_by('-created_at')
 
   now = timezone.now()
   
-  if time_frame == 'recent':
-    transactions = transactions.order_by('-created_at')[:5]
+  if time_frame == 'all':
+    transactions = transactions
+  
+  elif time_frame == 'recent':
+    transactions = transactions[:5]
   
   elif time_frame == 'today':
     transactions = transactions.filter(

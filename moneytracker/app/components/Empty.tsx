@@ -2,11 +2,7 @@ import { View, Text, StyleSheet } from "react-native";
 import { colors, globalStyles } from "../styles/global";
 import { Link } from "expo-router";
 
-type Props = {
-  transactionFilter: boolean;
-}
-
-export function EmptyPage({ transactionFilter }: Props) {
+export function EmptyPage() {
   return (
     <View style={styles.card}>
       <Text
@@ -16,14 +12,12 @@ export function EmptyPage({ transactionFilter }: Props) {
         ]}
       >
         Nothing to show here.{" "}
-        {!transactionFilter && (
-          <Link
-            href="../(tabs)/add-record"
-            style={{ textDecorationLine: "underline" }}
-          >
-            Create one!
-          </Link>
-        )}
+        <Link
+          href="../(tabs)/add-record"
+          style={{ textDecorationLine: "underline" }}
+        >
+          Create one!
+        </Link>
       </Text>
     </View>
   );

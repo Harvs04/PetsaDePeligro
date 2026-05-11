@@ -1,11 +1,11 @@
-import { useCallback, useContext } from "react";
+import { useContext } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Link } from "expo-router";
 import { colors, globalStyles } from "../styles/global";
 import Card from "./Cards";
 import { categories } from "../utils/constants";
 import { Dropdown } from "./Dropdown";
-import { AccountContext } from "../(tabs)/accounts";
+import { AccountContext } from "../contexts/account";
 import { EmptyPage } from "./Empty";
 
 type Account = {
@@ -37,7 +37,7 @@ export default function Accounts({ preview, showBalance, accounts }: Props) {
         style={[globalStyles.row, { marginBottom: 10, marginHorizontal: 2 }]}
       >
         <Text style={[globalStyles.sectionTitle]}>
-          {preview ? "Your Accounts" : "Group By:"}
+          {preview ? "Your Accounts" : ""}
         </Text>
         {preview ? (
           <Link href="/accounts">
