@@ -23,6 +23,8 @@ export const globalStyles = StyleSheet.create({
   card: {
     backgroundColor: "#16213e",
     borderRadius: 12,
+    borderWidth: 0.15,
+    borderColor: colors.primary,
     padding: 16,
     width: "100%",
   },
