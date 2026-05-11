@@ -29,40 +29,52 @@ function getGroup(date: Date): string {
   const now = new Date();
   const d = new Date(date);
 
-  const startOfDay = (d: Date) => new Date(d.getFullYear(), d.getMonth(), d.getDate());
+  const startOfDay = (d: Date) =>
+    new Date(d.getFullYear(), d.getMonth(), d.getDate());
   const todayStart = startOfDay(now);
   const dateStart = startOfDay(d);
 
-  const diffDays = Math.floor((todayStart.getTime() - dateStart.getTime()) / (1000 * 60 * 60 * 24));
+  const diffDays = Math.floor(
+    (todayStart.getTime() - dateStart.getTime()) / (1000 * 60 * 60 * 24),
+  );
 
-  if (diffDays === 0) return 'Today';
+  if (diffDays === 0) return "Today";
 
   const startOfThisWeek = new Date(todayStart);
   startOfThisWeek.setDate(now.getDate() - now.getDay());
 
   // check this week before yesterday so yesterday falls under this week if it's in the same week
-  if (d >= startOfThisWeek && d < todayStart) return 'This Week';
+  if (d >= startOfThisWeek && d < todayStart) return "This Week";
 
   const startOfLastWeek = new Date(startOfThisWeek);
   startOfLastWeek.setDate(startOfThisWeek.getDate() - 7);
   const endOfLastWeek = new Date(startOfThisWeek);
   endOfLastWeek.setDate(startOfThisWeek.getDate() - 1);
-  if (d >= startOfLastWeek && d <= endOfLastWeek) return 'Last Week';
+  if (d >= startOfLastWeek && d <= endOfLastWeek) return "Last Week";
 
   const startOfLastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
   const endOfLastMonth = new Date(now.getFullYear(), now.getMonth(), 0);
-  if (d >= startOfLastMonth && d <= endOfLastMonth) return 'Last Month';
+  if (d >= startOfLastMonth && d <= endOfLastMonth) return "Last Month";
 
   const startOfLastYear = new Date(now.getFullYear() - 1, 0, 1);
   const endOfLastYear = new Date(now.getFullYear() - 1, 11, 31);
-  if (d >= startOfLastYear && d <= endOfLastYear) return 'Last Year';
+  if (d >= startOfLastYear && d <= endOfLastYear) return "Last Year";
 
-  return 'Older';
+  return "Older";
 }
 
-const GROUP_ORDER = ['Today', 'This Week', 'Last Week', 'Last Month', 'Last Year', 'Older'];
+const GROUP_ORDER = [
+  "Today",
+  "This Week",
+  "Last Week",
+  "Last Month",
+  "Last Year",
+  "Older",
+];
 
-function groupTransactions(transactions: TransactionProps[]): GroupedTransactions {
+function groupTransactions(
+  transactions: TransactionProps[],
+): GroupedTransactions {
   return transactions.reduce((groups, transaction) => {
     const group = getGroup(new Date(transaction.created_at));
     if (!groups[group]) groups[group] = [];
@@ -77,7 +89,9 @@ function TransactionItem({ t }: { t: TransactionProps }) {
       <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
         <Image source={brands[t.source]} style={globalStyles.logo} />
         <View style={{ flexDirection: "column", gap: 2 }}>
-          <Text style={{ color: colors.text, fontWeight: "bold", fontSize: 16 }}>
+          <Text
+            style={{ color: colors.text, fontWeight: "bold", fontSize: 16 }}
+          >
             {t.name}
           </Text>
           <Text style={{ color: colors.textSecondary, fontSize: 14 }}>
@@ -115,7 +129,9 @@ export default function TransactionCards({ preview, transactions }: Props) {
   return (
     <>
       <View style={{ marginBottom: 10 }}>
-        <View style={[globalStyles.row, { marginBottom: 10, marginHorizontal: 2 }]}>
+        <View
+          style={[globalStyles.row, { marginBottom: 10, marginHorizontal: 2 }]}
+        >
           {preview && (
             <Text style={[globalStyles.sectionTitle]}>Recent Transactions</Text>
           )}
@@ -146,9 +162,7 @@ export default function TransactionCards({ preview, transactions }: Props) {
             </View>
           ))
         ) : (
-          <View style={[globalStyles.card, { paddingVertical: 12 }]}>
-            <EmptyPage />
-          </View>
+          <EmptyPage />
         )}
       </View>
     </>

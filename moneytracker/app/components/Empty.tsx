@@ -4,7 +4,17 @@ import { Link } from "expo-router";
 
 export function EmptyPage() {
   return (
-    <View style={styles.card}>
+    <View
+      style={
+        ([globalStyles.card,
+        {
+          height: "100%",
+          alignItems: "center",
+          justifyContent: "center",
+          paddingVertical: 100,
+        }])
+      }
+    >
       <Text
         style={[
           globalStyles.sectionTitle,
@@ -22,15 +32,3 @@ export function EmptyPage() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  card: {
-    width: "100%",
-    height: "100%",
-    alignItems: "center",
-    justifyContent: "center",
-    paddingVertical: 100,
-    backgroundColor: colors.surface,
-    borderRadius: 20,
-  },
-});
