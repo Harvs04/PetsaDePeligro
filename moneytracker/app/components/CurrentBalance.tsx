@@ -8,6 +8,7 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import { colors, globalStyles } from "../styles/global";
 import { formatCurrency } from "../utils/formats";
+import { router } from "expo-router";
 
 type Props = {
   balance: number;
@@ -24,7 +25,7 @@ export default function CurrentBalance({
 }: Props) {
   return (
     <View>
-      <View style={[globalStyles.card, { marginBottom: 15, }]}>
+      <View style={[globalStyles.card, { marginBottom: 15 }]}>
         <View style={globalStyles.row}>
           <Text style={globalStyles.label}>Current Balance</Text>
           <Pressable onPress={onPress}>
@@ -45,7 +46,15 @@ export default function CurrentBalance({
         {inHomePage && (
           <View style={styles.buttonRow}>
             <View style={styles.buttonCol}>
-              <Pressable style={styles.button}>
+              <Pressable
+                style={styles.button}
+                onPress={() =>
+                  router.push({
+                    pathname: `/(tabs)/add-record`,
+                    params: { type: "INCOME", isAccount: "false" },
+                  })
+                }
+              >
                 <Ionicons
                   name="arrow-down-outline"
                   size={24}
@@ -60,6 +69,12 @@ export default function CurrentBalance({
                   name="pricetag-outline"
                   size={24}
                   color={colors.pressableIcon}
+                  onPress={() =>
+                    router.push({
+                      pathname: `/(tabs)/add-record`,
+                      params: { type: "EXPENSE", isAccount: "false" },
+                    })
+                  }
                 />
               </Pressable>
               <Text style={styles.buttonText}>Expense</Text>
@@ -70,6 +85,12 @@ export default function CurrentBalance({
                   name="arrow-up-outline"
                   size={24}
                   color={colors.pressableIcon}
+                  onPress={() =>
+                    router.push({
+                      pathname: `/(tabs)/add-record`,
+                      params: { type: "TRANSFER", isAccount: "false" },
+                    })
+                  }
                 />
               </Pressable>
               <Text style={styles.buttonText}>Transfer</Text>

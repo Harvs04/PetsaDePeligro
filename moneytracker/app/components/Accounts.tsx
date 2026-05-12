@@ -1,11 +1,7 @@
-import { useContext } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
 import { colors, globalStyles } from "../styles/global";
 import Card from "./Cards";
-import { categories } from "../utils/constants";
-import { Dropdown } from "./Dropdown";
-import { AccountContext } from "../contexts/account";
 import { EmptyPage } from "./Empty";
 
 type Account = {
@@ -23,23 +19,15 @@ type Props = {
 };
 
 export default function Accounts({ preview, showBalance, accounts }: Props) {
-  const context = useContext(AccountContext);
-  const selectAccountCategory = preview
-    ? null
-    : (context?.selectAccountCategory ?? null);
-  const handleSelect = preview
-    ? () => {}
-    : (context?.handleSelect ?? (() => {}));
-
   return (
     <View>
-      <View
-        style={[globalStyles.row, { marginBottom: 10, marginHorizontal: 2 }]}
-      >
-        <Text style={[globalStyles.sectionTitle]}>
-          {preview ? "Your Accounts" : ""}
-        </Text>
-        {preview ? (
+      {preview && (
+        <View
+          style={[globalStyles.row, { marginBottom: 10, marginHorizontal: 2 }]}
+        >
+          <Text style={[globalStyles.sectionTitle]}>
+            {preview ? "Your Accounts" : ""}
+          </Text>
           <Link href="/accounts">
             <Text
               style={{
@@ -48,17 +36,11 @@ export default function Accounts({ preview, showBalance, accounts }: Props) {
                 textDecorationLine: "underline",
               }}
             >
-              View All
+              See more
             </Text>
           </Link>
-        ) : (
-          <Dropdown
-            selectedItem={selectAccountCategory}
-            setSelectedItem={handleSelect}
-            data={categories}
-          />
-        )}
-      </View>
+        </View>
+      )}
 
       <View style={[styles.grid, { marginBottom: 10 }]}>
         {accounts.length > 0 ? (
@@ -67,6 +49,12 @@ export default function Accounts({ preview, showBalance, accounts }: Props) {
               key={account.id}
               activeOpacity={0.5}
               style={{ width: "48%" }}
+              onPress={() =>
+                router.push({
+                  pathname: `../pages/accounts/${account.id}`,
+                  params: { title: account.name },
+                })
+              }
             >
               <Card
                 id={account.id}

@@ -1,30 +1,17 @@
 import { useCallback, useState, useMemo, useEffect } from "react";
-import { ScrollView, View, RefreshControl } from "react-native";
+import { ScrollView, View, RefreshControl, Text } from "react-native";
 import getAccounts from "../services/account.service";
-import getTransactions from "../services/transaction.service";
+// import getTransactions from "../services/transaction.service";
 import Accounts from "../components/Accounts";
 import TransactionCards from "../components/TransactionCards";
 import LandingHeader from "../components/LandingHeader";
 import CurrentBalance from "../components/CurrentBalance";
 import { globalStyles } from "../styles/global";
+import { Account, Transaction } from "../utils/constants";
+import { useFocusEffect } from '@react-navigation/native';
 
-type Account = {
-  id: number;
-  name: string;
-  balance: number;
-  category: string;
-  source: string;
-};
-
-type Transaction = {
-  id: number;
-  name: string;
-  transaction_type: string;
-  amount: number;
-  category: string;
-  source: string;
-  created_at: Date;
-};
+//TODO: Remove
+import { getTransactions } from "../storage/transaction";
 
 export default function HomePage() {
   const [refreshing, setRefreshing] = useState<boolean>(false);
@@ -33,10 +20,25 @@ export default function HomePage() {
   const [accounts, setAccounts] = useState<Account[]>([]);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
 
+  //TODO: Remove later
+  // const [meals, setMeals] = useState<Transaction[]>([]);
+
+  const loadTransactions = async () => {
+    const data = await getTransactions();
+    setTransactions(data);
+    console.log("Loaded meals:", data);
+  };
+
+  useFocusEffect(
+    useCallback(() => {
+      loadTransactions();
+    }, []),
+  );
+
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     fetchAccounts();
-    fetchTransactions();
+    // fetchTransactions();
     setTimeout(() => {
       setRefreshing(false);
     }, 2000);
@@ -55,27 +57,27 @@ export default function HomePage() {
     }
   };
 
-  const fetchTransactions = async () => {
-    try {
-      const data = await getTransactions({ timeFrame: "recent" });
-      setTransactions(data);
-    } catch (error) {
-      setTransactions([]);
-    }
-  };
+  // const fetchTransactions = async () => {
+  //   try {
+  //     const data = await getTransactions({ timeFrame: "recent" });
+  //     setTransactions(data);
+  //   } catch (error) {
+  //     setTransactions([]);
+  //   }
+  // };
 
   useEffect(() => {
     fetchAccounts();
-    fetchTransactions();
+    // fetchTransactions();
   }, []);
 
-  useMemo(() => {
-    const balance = accounts.reduce(
-      (accumulator, account) => accumulator + account.balance,
-      0,
-    );
-    setBalance(balance);
-  }, [accounts]);
+  // useMemo(() => {
+  //   const balance = accounts.reduce(
+  //     (accumulator, account) => accumulator + account.balance,
+  //     0,
+  //   );
+  //   setBalance(balance);
+  // }, [accounts]);
 
   return (
     <View style={globalStyles.container}>
@@ -92,11 +94,11 @@ export default function HomePage() {
           inHomePage={true}
           onPress={onPress}
         />
-        <Accounts
+        {/* <Accounts
           preview={true}
           accounts={accounts}
           showBalance={showBalance}
-        />
+        /> */}
         <TransactionCards preview={true} transactions={transactions} />
       </ScrollView>
     </View>

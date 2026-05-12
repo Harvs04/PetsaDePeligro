@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect, createContext } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { RefreshControl, View, ScrollView } from "react-native";
 import getTransactions from "../services/transaction.service";
 import { globalStyles } from "../styles/global";
@@ -7,17 +7,7 @@ import TransactionCards from "../components/TransactionCards";
 import { Dropdown } from "../components/Dropdown";
 import { timePeriod } from "../utils/constants";
 import { withinPeriod } from "../utils/comparisons";
-import { TransactionContext } from "../contexts/transaction";
-
-type Transaction = {
-  id: number;
-  name: string;
-  transaction_type: string;
-  amount: number;
-  category: string;
-  source: string;
-  created_at: Date;
-};
+import { Transaction } from "../utils/constants";
 
 export default function TransactionsPage() {
   const [refreshing, setRefreshing] = useState<boolean>(false);
@@ -42,7 +32,7 @@ export default function TransactionsPage() {
       !itemValue || itemValue === "ALL"
         ? transactions
         : transactions.filter((item: Transaction) =>
-            withinPeriod(new Date(item.created_at), itemValue),
+            withinPeriod(new Date(item.createdAt), itemValue),
           ),
     );
   };
@@ -64,7 +54,9 @@ export default function TransactionsPage() {
 
   return (
     <View style={[globalStyles.container]}>
-      <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10 }}>
+      <View
+        style={{ flexDirection: "row", alignItems: "center", marginBottom: 10 }}
+      >
         <HeaderText>Transactions</HeaderText>
         <Dropdown
           selectedItem={selectTransactionPeriod}
@@ -81,14 +73,7 @@ export default function TransactionsPage() {
           ></RefreshControl>
         }
       >
-        <TransactionContext.Provider
-          value={{
-            selectTransactionPeriod,
-            handleSelect,
-          }}
-        >
-          <TransactionCards preview={false} transactions={filterTransactions} />
-        </TransactionContext.Provider>
+        <TransactionCards preview={false} transactions={filterTransactions} />
       </ScrollView>
     </View>
   );

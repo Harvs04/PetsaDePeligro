@@ -1,16 +1,12 @@
-import {
-  useState,
-  useCallback,
-  useEffect,
-  useMemo,
-} from "react";
+import { useState, useCallback, useEffect, useMemo } from "react";
 import { RefreshControl, View, ScrollView } from "react-native";
 import getAccounts from "../services/account.service";
 import { globalStyles } from "../styles/global";
 import Accounts from "../components/Accounts";
 import CurrentBalance from "../components/CurrentBalance";
 import HeaderText from "../components/Header";
-import { AccountContext } from "../contexts/account";
+import { Dropdown } from "../components/Dropdown";
+import { categories } from "../utils/constants";
 
 type Account = {
   id: number;
@@ -76,7 +72,16 @@ export default function AccountsPage() {
 
   return (
     <View style={[globalStyles.container]}>
-      <HeaderText style={{ marginBottom: 15 }}>Accounts</HeaderText>
+      <View
+        style={{ flexDirection: "row", alignItems: "center", marginBottom: 10 }}
+      >
+        <HeaderText>Accounts</HeaderText>
+        <Dropdown
+          selectedItem={selectAccountCategory}
+          setSelectedItem={handleSelect}
+          data={categories}
+        />
+      </View>
       <ScrollView
         showsVerticalScrollIndicator={false}
         refreshControl={
@@ -92,18 +97,11 @@ export default function AccountsPage() {
           inHomePage={false}
           onPress={onPress}
         />
-        <AccountContext.Provider
-          value={{
-            selectAccountCategory,
-            handleSelect,
-          }}
-        >
-          <Accounts
-            preview={false}
-            accounts={filterAccounts}
-            showBalance={showBalance}
-          />
-        </AccountContext.Provider>
+        <Accounts
+          preview={false}
+          accounts={filterAccounts}
+          showBalance={showBalance}
+        />
       </ScrollView>
     </View>
   );
