@@ -9,7 +9,7 @@ export function TransactionItem({ t }: { t: Transaction }) {
   return (
     <View key={t.id} style={styles.transactionCard}>
       <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
-        <Image source={brands[t.source]} style={globalStyles.logo} />
+        <Image source={brands[t.source.toLowerCase()]} style={globalStyles.logo} />
         <View style={{ flexDirection: "column", gap: 2 }}>
           <Text
             style={{ color: colors.text, fontWeight: "bold", fontSize: 16 }}

@@ -26,13 +26,136 @@ export type Transaction = {
   createdAt: Date;
 };
 
+export type AccountType = "wallet" | "savings" | "credit" | "loans";
+
 export type TransactionAction = {
   action: "expense" | "income" | "transfer";
-}
+};
 
 // KEYS
-export const TRANSACTION_KEY = 'transactions';
-export const ACCOUNT_KEY = 'accounts';
+export const TRANSACTION_KEY = "transactions";
+export const ACCOUNT_KEY = "accounts";
+
+// OBJECTS
+export const SOURCES_PER_ACCOUNT_TYPE: Record<AccountType, string[]> = {
+  wallet: [
+    "cash",
+    "beep",
+    "gcash",
+    "gotyme",
+    "grab",
+    "hellomoney",
+    "joyride",
+    "lazada",
+    "marcopay",
+    "maya",
+    "palawan",
+    "foodpanda",
+    "payoneer",
+    "paypal",
+    "peddlr",
+    "raketph",
+    "shopback",
+    "shopee",
+    "starbucks",
+    "tiktok",
+    "vybe",
+    "wise",
+  ],
+  savings: [
+    "atome",
+    "aub",
+    "bankofcommerce",
+    "banko",
+    "bdo",
+    "bankofmakati",
+    "bpi",
+    "cbs",
+    "cardbank",
+    "cebuana",
+    "chinabank",
+    "cimb",
+    "ctbc",
+    "dbp",
+    "diskartech",
+    "eastwest",
+    "gotyme",
+    "hsbc",
+    "komo",
+    "landbank",
+    "maribank",
+    "maya",
+    "maybank",
+    "metrobank",
+    "netbank",
+    "ownbank",
+    "pbb",
+    "pbcom",
+    "pnb",
+    "psbank",
+    "rcbc",
+    "salmon",
+    "securitybank",
+    "singlife",
+    "tonik",
+    "unionbank",
+    "uniondigital",
+    "unobank",
+  ],
+  credit: [
+    "aub",
+    "bankofcommerce",
+    "bdo",
+    "bpi",
+    "chinabank",
+    "eastwest",
+    "hsbc",
+    "landbank",
+    "maya",
+    "maybank",
+    "metrobank",
+    "pnb",
+    "rcbc",
+    "securitybank",
+    "unionbank",
+    "zed",
+  ],
+  loans: [
+    "atome",
+    "billease",
+    "cashalo",
+    "cimb",
+    "gcash",
+    "gotyme",
+    "homecredit",
+    "juanhand",
+    "lazada",
+    "maribank",
+    "maya",
+    "salmon",
+    "shopee",
+    "skyro",
+    "sss",
+    "tala",
+    "tiktok",
+  ],
+  // investment: [
+  //   'gold',
+  //   'silver',
+  //   'ethereum',
+  //   'bitcoin',
+  //   'pagibig_mp2'
+  // ],
+  // asset: [
+  //   'arts_and_media',
+  //   'vehicle',
+  //   'housing',
+  //   'land',
+  //   'apparel_and_accessory',
+  //   'jewelry',
+  //   'device',
+  // ]
+};
 
 // ARRAYS
 export const categories: DropdownItems[] = [
@@ -54,7 +177,7 @@ export const timePeriod: DropdownItems[] = [
   { value: "LAST_WEEK", label: "Last Week" },
   { value: "LAST_MONTH", label: "Last Month" },
   { value: "LAST_YEAR", label: "Last Year" },
-]
+];
 
 export const GROUP_ORDER = [
   "Today",
@@ -66,12 +189,12 @@ export const GROUP_ORDER = [
 ];
 
 export const TRANSACTION_ACTIONS = [
-  { value: "INCOME", label: "Income", icon: 'arrow-down-outline' },
+  { value: "INCOME", label: "Income", icon: "arrow-down-outline" },
   { value: "EXPENSE", label: "Expense", icon: "wallet-outline" },
-  { value: "TRANSFER", label: "Transfer", icon: 'arrow-up-outline' },
-]
+  { value: "TRANSFER", label: "Transfer", icon: "arrow-up-outline" },
+];
 
-// ACCOUNT 
+// ACCOUNT
 export const ACCOUNT_TYPES = [
   {
     id: "wallet",
@@ -120,8 +243,7 @@ export const COLORS = [
   "#E74C3C",
   "#2980B9",
   "#8E44AD",
-  "#F8BBD0"
+  "#F8BBD0",
 ];
 
 export const CURRENCIES = ["PHP", "USD", "EUR", "GBP", "JPY"];
-

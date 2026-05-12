@@ -6,19 +6,28 @@ import {
   TouchableOpacity,
   TextInput,
   ScrollView,
+  Image
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { colors, globalStyles } from "@/app/styles/global";
 import { Ionicons } from "@expo/vector-icons";
-import { ACCOUNT_TYPES, COLORS, CURRENCIES } from "@/app/utils/constants";
+import {
+  ACCOUNT_TYPES,
+  COLORS,
+  CURRENCIES,
+  SOURCES_PER_ACCOUNT_TYPE,
+  AccountType
+} from "@/app/utils/constants";
+import { brands } from "@/app/utils/logos";
 
 export default function CreateAccountScreen() {
   const [step, setStep] = useState(1);
-  const [selectedType, setSelectedType] = useState<string | null>(null);
-  const [accountName, setAccountName] = useState("");
-  const [balance, setBalance] = useState("");
-  const [currency, setCurrency] = useState("PHP");
-  const [selectedColor, setSelectedColor] = useState(COLORS[0]);
+  const [selectedType, setSelectedType] = useState<AccountType>("wallet");
+  const [selectedSource, setSelectedSource] = useState<string | null>(null);
+  const [accountName, setAccountName] = useState<string>("");
+  const [balance, setBalance] = useState<string>("");
+  const [currency, setCurrency] = useState<string>("PHP");
+  const [selectedColor, setSelectedColor] = useState<string>(COLORS[0]);
 
   const chosen = ACCOUNT_TYPES.find((t) => t.id === selectedType);
 
@@ -46,9 +55,7 @@ export default function CreateAccountScreen() {
         </View>
       </View>
 
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-      >
+      <ScrollView showsVerticalScrollIndicator={false}>
         {/* STEP 1 */}
         {step === 1 && (
           <View style={styles.content}>
@@ -59,7 +66,7 @@ export default function CreateAccountScreen() {
                 return (
                   <TouchableOpacity
                     key={type.id}
-                    onPress={() => setSelectedType(type.id)}
+                    onPress={() => setSelectedType(type.id as AccountType)}
                     style={[
                       styles.card,
                       {
@@ -90,17 +97,58 @@ export default function CreateAccountScreen() {
               })}
             </View>
 
+            <View style={styles.brandGrid}>
+              {SOURCES_PER_ACCOUNT_TYPE[selectedType]?.map((brand: string) => {
+                const active = selectedSource === brand;
+
+                return (
+                  <TouchableOpacity
+                    key={brand}
+                    activeOpacity={0.8}
+                    onPress={() => setSelectedSource(brand)}
+                    style={[
+                      styles.brandCard,
+                      {
+                        borderColor: active ? colors.primary : colors.header,
+                        backgroundColor: active
+                          ? "rgba(59,130,246,0.15)"
+                          : colors.surface,
+                      },
+                    ]}
+                  >
+                    <Image
+                      source={brands[brand.toLowerCase()]}
+                      style={styles.brandLogo}
+                      resizeMode="contain"
+                    />
+
+                    <Text
+                      style={[
+                        styles.brandText,
+                        {
+                          color: active ? colors.primary : colors.text,
+                        },
+                      ]}
+                    >
+                      {brand}
+                    </Text>
+                  </TouchableOpacity>
+                );
+              })}
+            </View>
+
             <TouchableOpacity
               disabled={!selectedType}
               onPress={() => setStep(2)}
               style={[
                 styles.button,
                 {
-                  backgroundColor: selectedType ? colors.primary : colors.primary + "50",
+                  backgroundColor: selectedType
+                    ? colors.primary
+                    : colors.primary + "50",
                   marginTop: 15,
                 },
               ]}
-              
             >
               <Text
                 style={[
@@ -119,11 +167,7 @@ export default function CreateAccountScreen() {
         {/* STEP 2 */}
         {step === 2 && (
           <View style={styles.content}>
-            <View
-              style={[
-                styles.badge,
-              ]}
-            >
+            <View style={[styles.badge]}>
               <Ionicons
                 name={chosen?.icon as any}
                 size={16}
@@ -213,7 +257,11 @@ export default function CreateAccountScreen() {
                   </Text>
                 </View>
 
-                <Ionicons name={chosen?.icon as any} size={28} color={colors.pressableIcon} />
+                <Ionicons
+                  name={chosen?.icon as any}
+                  size={28}
+                  color={colors.pressableIcon}
+                />
               </View>
 
               <View style={{ marginTop: 20 }}>
@@ -228,9 +276,19 @@ export default function CreateAccountScreen() {
               </View>
             </View>
 
-            <View style={{ flexDirection: "row", gap: 10, marginTop: 15, width: '100%' }}>
+            <View
+              style={{
+                flexDirection: "row",
+                gap: 10,
+                marginTop: 15,
+                width: "100%",
+              }}
+            >
               <TouchableOpacity
-                style={[styles.button, { backgroundColor: "#F5F5FA", width: '48%', }]}
+                style={[
+                  styles.button,
+                  { backgroundColor: "#F5F5FA", width: "48%" },
+                ]}
                 onPress={() => setStep(1)}
                 activeOpacity={0.7}
               >
@@ -242,7 +300,7 @@ export default function CreateAccountScreen() {
                 style={[
                   styles.button,
                   {
-                    width: '48%',
+                    width: "48%",
                     backgroundColor: accountName.trim()
                       ? colors.primary
                       : colors.primary + "50",
@@ -412,5 +470,36 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 22,
     fontWeight: "800",
+  },
+  brandGrid: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+    gap: 12,
+    marginTop: 12,
+  },
+
+  brandCard: {
+    width: "30%",
+    borderWidth: 1,
+    borderRadius: 16,
+    paddingVertical: 14,
+    paddingHorizontal: 10,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+
+  brandLogo: {
+    width: 36,
+    height: 36,
+    borderRadius: 100,
+    marginBottom: 8,
+  },
+
+  brandText: {
+    fontSize: 12,
+    fontWeight: "600",
+    textTransform: "capitalize",
+    textAlign: "center",
   },
 });
