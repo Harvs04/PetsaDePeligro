@@ -62,7 +62,7 @@ export default function CreateForm({ type }: Props) {
       <TextInput
         style={styles.amountInput}
         caretHidden={true}
-        placeholder={`${CURRENCIES[0].label} 0`}
+        placeholder={`${CURRENCIES[0]} 0`}
         placeholderTextColor={colors.textSecondary}
         keyboardType="decimal-pad"
         value={amount}

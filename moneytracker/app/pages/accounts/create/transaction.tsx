@@ -1,8 +1,8 @@
 import { useCallback, useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { useLocalSearchParams, Stack, useFocusEffect } from "expo-router";
-import { TRANSACTION_ACTIONS } from "@/app/utils/constants"; 
-import { colors, globalStyles } from "@/app/styles/global"; 
+import { TRANSACTION_ACTIONS } from "@/app/utils/constants";
+import { colors, globalStyles } from "@/app/styles/global";
 import HeaderText from "@/app/components/Header";
 import CreateForm from "@/app/components/CreateForm";
 import { Ionicons } from "@expo/vector-icons";
@@ -10,10 +10,12 @@ import { Ionicons } from "@expo/vector-icons";
 type Props = {
   type: string;
   setTransactionType: (action: string) => void;
-}
+};
 
-export default function CreateTransactionForm({ type, setTransactionType }: Props) {
-
+export default function CreateTransactionForm({
+  type,
+  setTransactionType,
+}: Props) {
   return (
     <View>
       <HeaderText style={{ marginBottom: 15 }}>Create Transaction</HeaderText>
@@ -66,7 +68,6 @@ const styles = StyleSheet.create({
     borderColor: colors.textSecondary,
     overflow: "hidden",
     alignSelf: "stretch",
-    backgroundColor: "#f8fafc",
   },
   button: {
     flex: 1,
@@ -89,10 +90,10 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 14,
     fontWeight: "500",
-    color: colors.text,
+    color: colors.textSecondary,
   },
   selectedLabel: {
-    color: colors.text,
-    fontWeight: "600",
+    color: "#fff",
+    fontWeight: "700",
   },
 });
