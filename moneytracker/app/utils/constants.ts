@@ -5,11 +5,13 @@ type DropdownItems = {
 };
 
 export type Account = {
-  id: number;
+  id: string;
+  type: string;
+  source: string;
   name: string;
   balance: number;
-  category: string;
-  source: string;
+  color: string;
+  createdAt: Date;
 };
 
 export type Transaction = {
